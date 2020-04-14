@@ -5,13 +5,14 @@
  */
 import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
 import React, { useEffect } from 'react';
-import { Link, useIntl, connect } from 'umi';
+import { Link, connect } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+
 const noMatch = (
   <Result
     status={403}
@@ -24,12 +25,12 @@ const noMatch = (
     }
   />
 );
-
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
-  menuList.map(item => {
+
+const menuDataRender = (menuList) =>
+  menuList.map((item) => {
     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
     return Authorized.check(item.authority, localItem, null);
   });
@@ -60,7 +61,7 @@ const defaultFooterDom = (
   />
 );
 
-const BasicLayout = props => {
+const BasicLayout = (props) => {
   const {
     dispatch,
     children,
@@ -84,7 +85,7 @@ const BasicLayout = props => {
    * init variables
    */
 
-  const handleMenuCollapse = payload => {
+  const handleMenuCollapse = (payload) => {
     if (dispatch) {
       dispatch({
         type: 'global/changeLayoutCollapsed',
@@ -96,11 +97,9 @@ const BasicLayout = props => {
   const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
     authority: undefined,
   };
-  const { formatMessage } = useIntl();
   return (
     <ProLayout
       logo={logo}
-      formatMessage={formatMessage}
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
@@ -118,9 +117,7 @@ const BasicLayout = props => {
       breadcrumbRender={(routers = []) => [
         {
           path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-          }),
+          breadcrumbName: '首页',
         },
         ...routers,
       ]}
