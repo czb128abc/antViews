@@ -1,0 +1,69 @@
+@import url('~@/less/vars.less');
+// :global {
+.left-right-layout-container {
+  word-break: break-word;
+
+  &.ant-layout {
+    .ant-layout-sider-trigger {
+      background: transparent;
+    }
+    .ant-layout-sider {
+      background: transparent; // #eef2f5;
+    }
+  }
+  &.right-divider.ant-layout {
+    .ant-layout-sider {
+      border-left: 1px solid @border-color-base;
+    }
+  }
+  &.left-divider.ant-layout {
+    .ant-layout-sider {
+      border-right: 1px solid @border-color-base;
+    }
+  }
+  &.top-border {
+    border-top: 1px solid @border-color-base;
+  }
+
+  &.left-fixed {
+    &.left-white-background .ant-layout-sider {
+      background: @component-background;
+    }
+    &.right-white-background .ant-layout-content {
+      background: @component-background;
+    }
+  }
+  &.right-fixed {
+    &.right-white-background .ant-layout-sider {
+      background: @component-background;
+    }
+    &.left-white-background .ant-layout-content {
+      background: @component-background;
+    }
+  }
+
+  .trigger-container {
+    position: absolute;
+    z-index: 1;
+    top: 6px;
+
+    display: inline-block;
+
+    padding: 4px;
+
+    background: white;
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+  }
+  .left-trigger-container {
+    right: 2px;
+  }
+  .right-trigger-container {
+    left: 2px;
+  }
+  .content-container {
+    overflow: auto;
+  }
+}
+// }

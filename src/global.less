@@ -19,6 +19,7 @@ canvas {
 }
 
 body {
+  @import url('~@/less/index.less');
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,8 +32,9 @@ ol {
 
 @media (max-width: @screen-xs) {
   .ant-table {
-    width: 100%;
     overflow-x: auto;
+
+    width: 100%;
     &-thead > tr,
     &-tbody > tr {
       > th,

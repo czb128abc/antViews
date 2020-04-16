@@ -2,19 +2,22 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import pageRoutes from './router.config';
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
   hash: true,
   antd: {},
   dva: {
     hmr: true,
+    immer: true,
+    skipModelValidate: true,
   },
   locale: {
     // default zh-CN
     default: 'zh-CN',
     // default true, when it is true, will use `navigator.language` overwrite default
     antd: true,
-    baseNavigator: true,
+    baseNavigator: false,
   },
   dynamicImport: {
     loading: '@/presetComponents/PageLoading/index',
@@ -23,67 +26,7 @@ export default defineConfig({
     ie: 11,
   },
   // umi routes: https://umijs.org/docs/routing
-  routes: [
-    {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          name: 'login',
-          path: '/user/login',
-          component: './user/login',
-        },
-      ],
-    },
-    {
-      path: '/',
-      component: '../layouts/SecurityLayout',
-      routes: [
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
-              routes: [
-                {
-                  path: '/admin/sub-page',
-                  name: 'sub-page',
-                  icon: 'smile',
-                  component: './Welcome',
-                  authority: ['admin'],
-                },
-              ],
-            },
-            {
-              component: './404',
-            },
-          ],
-        },
-        {
-          component: './404',
-        },
-      ],
-    },
-    {
-      component: './404',
-    },
-  ],
+  routes: pageRoutes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     // ...darkTheme,
