@@ -9,8 +9,7 @@ _roadhog-api-doc
 # production
 /dist
 /es
-/umd
-/commonjs
+/lib
 /.vscode
 
 # misc
