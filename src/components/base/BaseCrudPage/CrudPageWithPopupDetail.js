@@ -34,7 +34,7 @@ class CrudPageWithPopupDetail extends PureComponent {
     const expectantConfigKeys = ['namespace', 'formFieldsMap', 'ListItem', 'BaseListView'];
     const notConfigKeys = [];
     const configKeys = Object.keys(config);
-    expectantConfigKeys.forEach(key => {
+    expectantConfigKeys.forEach((key) => {
       if (!configKeys.includes(key)) {
         notConfigKeys.push(key);
       }
@@ -163,7 +163,7 @@ class CrudPageWithPopupDetail extends PureComponent {
     }
   };
 
-  del = async item => {
+  del = async (item) => {
     const { dispatch } = this.props;
     const result = await dispatch({
       type: `${this.namespace}/del`,
@@ -176,7 +176,7 @@ class CrudPageWithPopupDetail extends PureComponent {
     }
   };
 
-  rendListItem = item => {
+  rendListItem = (item) => {
     const { ListItem } = this;
     const actionList = this.getListItemActionList(item);
     const listItemConfig = {
@@ -258,7 +258,7 @@ class CrudPageWithPopupDetail extends PureComponent {
               onSearch={() => {
                 this.search();
               }}
-            />
+            />,
           )}
         </Form>
       </div>
@@ -268,7 +268,7 @@ class CrudPageWithPopupDetail extends PureComponent {
   render() {
     const { functionName } = this;
     return (
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title={false}>
         <Card title={`${functionName}列表`} extra={this.rendCardExtra()} bordered={false}>
           {this.rendContent()}
         </Card>

@@ -4,11 +4,9 @@ import * as services from './services';
 import { namespace } from './consts';
 
 const effects = {
-  *queryListPage({ payload }, { call, put, select }) {
-    const { selectedStationId } = yield select(s => s.monitoringPlatformCommon);
+  *queryListPage({ payload }, { call, put }) {
     const { date, ...other } = payload;
     const param = {
-      stationId: selectedStationId,
       ...removeEmptyFields(other),
     };
     if (notEmptyArray(date) && !!date[0]) {

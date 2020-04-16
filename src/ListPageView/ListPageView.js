@@ -258,7 +258,7 @@ export default class ListPageView extends AbstractListPageView {
     const { selectRecord } = this.state;
     const { match } = this.props;
     return (
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title={false}>
         <Switch>
           <Route
             path={`${match.path.replace('/:listPage', '')}/add`}
