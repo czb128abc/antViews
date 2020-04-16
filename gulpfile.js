@@ -3,23 +3,7 @@ const babel = require('gulp-babel');
 const clean = require('del');
 // const ts = require('gulp-typescript');
 const merge = require('merge2');
-
-const config = {
-  // allowJs: true,
-  include: ['src/**/*.js', 'src/**/*.jsx'],
-  compilerOptions: {
-    sourceMap: true,
-    noImplicitAny: false, // 是否允许属性定义为any
-    esModuleInterop: true,
-    allowSyntheticDefaultImports: true,
-    moduleResolution: 'node', // module === "AMD" or "System" or "ES6" ? "Classic" : "Node". Determine how modules get resolved
-    // "module": "es2015",
-    target: 'es2015',
-    jsx: 'react',
-  },
-  exclude: ['node_modules', 'lib', 'guide', 'docs', 'site', 'dist', 'es'],
-};
-console.log('...config', config);
+const through = require('through2');
 
 // const tsProject = ts.createProject(config);
 const ESDIR = './es';
@@ -39,11 +23,28 @@ function moveLess(dir) {
   return gulp.src('./src/**/*.less').pipe(gulp.dest(dir));
 }
 
+function paserSnippet(pairs) {
+  return through.obj(function (file, endcoding, callback) {
+    if (file.isNull()) {
+      this.push(file);
+      return callback();
+    }
+    if (file.isStream()) {
+      console.error('gulp error: streaming not supported');
+      return callback();
+    }
+    let content = file.contents.toString();
+    console.log(content);
+    content = content.replace('@/', 'antVews/');
+    file.contents = new Buffer(content);
+    this.push(file);
+    callback();
+  });
+}
+
 function compileTs() {
   // return tsProject.src().pipe(tsProject());
-  return gulp.src(['./src/**/*.js', './src/**/*.jsx'], {
-    debug: true,
-  });
+  return gulp.src(['./src/**/*.js', './src/**/*.jsx'], {}).pipe(paserSnippet());
   // console.log('===compileTs==');
   // const sream = tsProject.src().pipe(tsProject()).js;
   // console.log('===compileTs==');
