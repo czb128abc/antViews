@@ -8,6 +8,7 @@ const through = require('through2');
 // const tsProject = ts.createProject(config);
 const ESDIR = './es';
 const LIBDIR = './lib';
+const commomPath = `${process.cwd()}/src/`;
 
 /* eslint-disable */
 gulp.task('clean', () => {
@@ -34,9 +35,18 @@ function paserSnippet(pairs) {
       return callback();
     }
     let content = file.contents.toString();
-    console.log(content);
-    content = content.replace('@/', 'antVews/');
-    file.contents = new Buffer(content);
+    if (content.includes(`from '@/`)) {
+      const fileUrl = file.history[0].replace(commomPath, '');
+      const targeStr = fileUrl
+        .split('/')
+        .map((item) => '../')
+        .filter((_, index) => index > 0)
+        .join('');
+      content = content.replace(`from '@/`, `from '${targeStr}`);
+      // console.log('paserSnippet -> content', content);
+      file.contents = new Buffer(content);
+    }
+
     this.push(file);
     callback();
   });

@@ -1,8 +1,15 @@
 {
-  "name": "ant-design-pro",
-  "version": "1.0.0",
-  "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "name": "ant-views",
+  "version": "1.0.2",
+  "description": "antd umi 后台项目前端组件封装和方法库",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
@@ -11,8 +18,7 @@
     "fetch:blocks": "pro fetch-blocks --branch=umi@3 && npm run prettier",
     "gh-pages": "cp CNAME ./dist/ && gh-pages -d dist",
     "i18n-remove": "pro i18n-remove --locale=zh-CN --write",
-    "postinstall": "umi g tmp",
-    "lint": "umi g tmp && npm run lint:js && npm run lint:style && npm run lint:prettier",
+    "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
@@ -52,8 +58,6 @@
     "last 2 versions",
     "not ie <= 10"
   ],
-  "main": "lib/index.js",
-  "module": "es/index.js",
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.8",
@@ -74,6 +78,7 @@
     "use-merge-value": "^1.0.1"
   },
   "devDependencies": {
+    "@ant-design/pro-cli": "^1.0.18",
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
     "@babel/plugin-proposal-class-properties": "^7.2.0",
@@ -83,10 +88,6 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.4.5",
-    "gulp": "^4.0.0",
-    "gulp-babel": "^8.0.0",
-    "del": "^3.0.0",
-    "@ant-design/pro-cli": "^1.0.18",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",
@@ -105,11 +106,14 @@
     "chalk": "^4.0.0",
     "cross-env": "^7.0.0",
     "cross-port-killer": "^1.1.1",
+    "del": "^3.0.0",
     "detect-installer": "^1.0.1",
     "enzyme": "^3.11.0",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
     "gh-pages": "^2.0.1",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
     "husky": "^4.0.7",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
@@ -117,7 +121,8 @@
     "prettier": "^2.0.1",
     "pro-download": "1.0.1",
     "puppeteer-core": "^2.1.1",
-    "stylelint": "^13.0.0"
+    "stylelint": "^13.0.0",
+    "through2": "^3.0.1"
   },
   "engines": {
     "node": ">=10.0.0"
