@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { Modal, Icon } from 'antd';
-import routers from '../../config/router.config';
 
 export function getDrawerConfig(props = {}) {
   const config = {
@@ -182,7 +181,7 @@ export function calcObjectListCrossUnion(leftList, rightList, primaryKey = '') {
   return result;
 }
 
-export function getConfigMenus(temList = JSON.parse(JSON.stringify(routers)), parent = {}) {
+export function getConfigMenus(temList = [], parent = {}) {
   const menus = [];
   temList.forEach((item) => {
     if (!item.redirect) {
