@@ -9,9 +9,13 @@ export default {
   fixSiderbar: false,
   colorWeak: false,
   menu: {
-    locale: true,
+    locale: false,
   },
-  title: 'Ant Design Pro',
+  title: '鹏杰智联',
   pwa: false,
   iconfontUrl: '',
+  footer: {
+    copyright: '鹏杰智联研发中心',
+    links: [],
+  },
 };
