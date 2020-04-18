@@ -1,12 +1,80 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu, Spin, message } from 'antd';
 import React from 'react';
-import { history, connect } from 'umi';
+import { connect } from 'umi';
+import PopupDetail from '@/ListPageView/components/PopupDetail';
+import { createRules } from '@/utils/validate';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
+const formItemLayout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 20,
+  },
+};
+
+const formFieldsMap = {
+  phoneNumber: {
+    label: '手机号码',
+    fieldKey: 'phoneNumber',
+    fieldType: 'text',
+    fieldAttr: {
+      formItemLayout,
+      fieldDecoratorConfig: {
+        initialValue: '',
+        rules: createRules(),
+      },
+    },
+    otherConfig: {},
+  },
+  userPassword: {
+    label: '密码',
+    fieldKey: 'userPassword',
+    fieldType: 'textPassword',
+    fieldAttr: {
+      formItemLayout,
+      fieldDecoratorConfig: {
+        initialValue: '',
+        rules: createRules(),
+      },
+    },
+    otherConfig: {},
+  },
+  userPassword2: {
+    label: '确认密码',
+    fieldKey: 'userPassword2',
+    fieldType: 'textPassword',
+    fieldAttr: {
+      formItemLayout,
+      fieldDecoratorConfig: {
+        initialValue: '',
+        rules: createRules(),
+      },
+    },
+    otherConfig: {},
+  },
+};
 class AvatarDropdown extends React.Component {
-  onMenuClick = event => {
+  updatePassword = async (values, { type, hide, resetFields }) => {
+    const { dispatch } = this.props;
+    const isEdit = type === 'edit';
+    const params = values;
+    const result = await dispatch({
+      type: `systemLogin/updatePassword`,
+      payload: params,
+    });
+    if (result.success) {
+      const msg = isEdit ? '修改成功' : '新增成功';
+      message.success(msg);
+      resetFields();
+      hide();
+    }
+  };
+
+  onMenuClick = (event) => {
     const { key } = event;
 
     if (key === 'logout') {
@@ -17,11 +85,7 @@ class AvatarDropdown extends React.Component {
           type: 'login/logout',
         });
       }
-
-      return;
     }
-
-    history.push(`/account/${key}`);
   };
 
   render() {
@@ -30,23 +94,29 @@ class AvatarDropdown extends React.Component {
         avatar: '',
         name: '',
       },
-      menu,
+      // menu,
     } = this.props;
+    const phoneNumber = '';
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        {menu && (
-          <Menu.Item key="center">
-            <UserOutlined />
-            个人中心
-          </Menu.Item>
-        )}
-        {menu && (
-          <Menu.Item key="settings">
+        <Menu.Item key="updatePassword">
+          <PopupDetail
+            type="edit"
+            formFieldsMap={formFieldsMap}
+            displayType="displayTypeModal"
+            topTitle="修改密码"
+            record={{
+              phoneNumber,
+            }}
+            width={600}
+            onSubmit={this.updatePassword}
+          >
             <SettingOutlined />
-            个人设置
-          </Menu.Item>
-        )}
-        {menu && <Menu.Divider />}
+            修改密码
+          </PopupDetail>
+        </Menu.Item>
+
+        <Menu.Divider />
 
         <Menu.Item key="logout">
           <LogoutOutlined />
@@ -57,7 +127,6 @@ class AvatarDropdown extends React.Component {
     return currentUser && currentUser.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
           <span className={styles.name}>{currentUser.name}</span>
         </span>
       </HeaderDropdown>
