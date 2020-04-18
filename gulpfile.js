@@ -4,6 +4,50 @@ const clean = require('del');
 // const ts = require('gulp-typescript');
 const merge = require('merge2');
 const through = require('through2');
+const filter = require('gulp-filter');
+
+const lessFileFilter = filter((file) => {
+  const filterDirs = [
+    'src/global.less',
+    'src/index.js',
+    'src/utils',
+    'src/components',
+    'src/ListPageView',
+    'src/presetComponents/Authorized',
+  ];
+  const path = file.history[0];
+  let isFilterDir = false;
+  filterDirs.forEach((item) => {
+    if (!isFilterDir && path.includes(item)) {
+      isFilterDir = true;
+    }
+  });
+  if (isFilterDir) {
+    console.log('提取文件less', path);
+  }
+  return isFilterDir;
+});
+
+const jsFileFilter = filter((file) => {
+  const filterDirs = [
+    'src/index.js',
+    'src/utils',
+    'src/components',
+    'src/ListPageView',
+    'src/presetComponents/Authorized',
+  ];
+  const path = file.history[0];
+  let isFilterDir = false;
+  filterDirs.forEach((item) => {
+    if (!isFilterDir && path.includes(item)) {
+      isFilterDir = true;
+    }
+  });
+  if (isFilterDir) {
+    console.log('提取文件js', path);
+  }
+  return isFilterDir;
+});
 
 // const tsProject = ts.createProject(config);
 const ESDIR = './es';
@@ -21,7 +65,7 @@ gulp.task('cleanEs', () => {
 });
 
 function moveLess(dir) {
-  return gulp.src('./src/**/*.less').pipe(gulp.dest(dir));
+  return gulp.src('./src/**/*.less').pipe(lessFileFilter).pipe(gulp.dest(dir));
 }
 
 function paserSnippet(pairs) {
@@ -54,7 +98,7 @@ function paserSnippet(pairs) {
 
 function compileTs() {
   // return tsProject.src().pipe(tsProject());
-  return gulp.src(['./src/**/*.js', './src/**/*.jsx'], {}).pipe(paserSnippet());
+  return gulp.src(['./src/**/*.js', './src/**/*.jsx'], {}).pipe(jsFileFilter).pipe(paserSnippet());
   // console.log('===compileTs==');
   // const sream = tsProject.src().pipe(tsProject()).js;
   // console.log('===compileTs==');

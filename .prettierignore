@@ -4,6 +4,8 @@ package.json
 .umi-production
 /dist
 /es
+/es
+/lib
 /umd
 /commonjs
 .dockerignore

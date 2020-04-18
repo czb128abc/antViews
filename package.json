@@ -36,9 +36,9 @@
     "test": "umi test",
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
-    "lib": "gulp lib",
-    "es": "gulp es",
-    "buildAll": "gulp",
+    "gulp:lib": "gulp lib",
+    "gulp:es": "gulp es",
+    "gulp": "npm run gulp:lib && npm run gulp:es",
     "tsc": "tsc"
   },
   "husky": {
@@ -114,6 +114,7 @@
     "gh-pages": "^2.0.1",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
+    "gulp-filter": "^6.0.0",
     "husky": "^4.0.7",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
