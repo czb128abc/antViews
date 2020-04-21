@@ -11,11 +11,11 @@ export default {
   menu: {
     locale: false,
   },
-  title: '鹏杰智联',
+  title: '陆鱿',
   pwa: false,
-  iconfontUrl: '',
+  iconfontUrl: '/static/logo.svg',
   footer: {
-    copyright: '鹏杰智联研发中心',
+    copyright: '5945 研发中心',
     links: [],
   },
 };

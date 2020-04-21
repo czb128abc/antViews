@@ -82,7 +82,7 @@ class AvatarDropdown extends React.Component {
 
       if (dispatch) {
         dispatch({
-          type: 'login/logout',
+          type: 'systemLogin/logout',
         });
       }
     }
@@ -124,10 +124,10 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.name ? (
+    return currentUser && currentUser.realName ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <span className={styles.name}>{currentUser.name}</span>
+          <span className={styles.name}>{currentUser.realName}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -144,6 +144,6 @@ class AvatarDropdown extends React.Component {
   }
 }
 
-export default connect(({ user }) => ({
-  currentUser: user.currentUser,
+export default connect(({ systemLogin }) => ({
+  currentUser: systemLogin.userInfo,
 }))(AvatarDropdown);

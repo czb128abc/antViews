@@ -5,7 +5,7 @@ import proxy from './proxy';
 import pageRoutes from './router.config';
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
-  hash: true,
+  hash: false,
   antd: {},
   dva: {
     hmr: true,
@@ -36,5 +36,10 @@ export default defineConfig({
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
+  },
+  // base: commonPath,
+  publicPath: './',
+  history: {
+    type: 'hash',
   },
 });

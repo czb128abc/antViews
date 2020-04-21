@@ -4,7 +4,7 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       {
-        name: 'login',
+        name: '登录',
         path: '/user/login',
         component: './user/login',
       },
@@ -25,7 +25,7 @@ export default [
           },
           {
             path: '/welcome',
-            name: 'welcome',
+            name: '欢迎页面',
             icon: 'smile',
             component: './Welcome',
           },
@@ -37,7 +37,7 @@ export default [
           },
           {
             path: '/admin',
-            name: 'admin',
+            name: '管理',
             icon: 'crown',
             component: './Admin',
             authority: ['admin'],
