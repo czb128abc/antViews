@@ -65,7 +65,7 @@ gulp.task('cleanEs', () => {
 });
 
 function moveLess(dir) {
-  return gulp.src('./src/**/*.less').pipe(lessFileFilter).pipe(gulp.dest(dir));
+  return gulp.src(['./src/**/*.less', './src/**/*.d.ts']).pipe(lessFileFilter).pipe(gulp.dest(dir));
 }
 
 function paserSnippet(pairs) {

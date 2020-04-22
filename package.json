@@ -1,12 +1,11 @@
 {
   "name": "ant-views",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "antd umi 后台项目前端组件封装和方法库",
   "main": "lib/index.js",
   "module": "es/index.js",
   "license": "MIT",
   "files": [
-    "dist",
     "lib",
     "es"
   ],
@@ -62,6 +61,7 @@
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.8",
     "@ant-design/pro-table": "^2.2.0",
+    "ant-views": "^1.0.5",
     "antd": "^3.26.15",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",

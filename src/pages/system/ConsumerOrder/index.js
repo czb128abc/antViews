@@ -1,7 +1,10 @@
 import React from 'react';
 import { message } from 'antd';
 import { LineEllipsis } from '@/utils/processRenderData';
-import ListPageView, { bindReduxAntFormProps, calcListPageViewConfig } from '@/ListPageView/index';
+import ListPageView, {
+  bindReduxAntFormProps,
+  calcListPageViewConfig,
+} from 'ant-views/es/ListPageView';
 import ListItem from './components/ListItem';
 import { namespace, formFieldsMap, consumerTypeEnumMap } from './consts';
 import ChargeTypeConsumerOrderDetailModal from './components/ChargeTypeConsumerOrderDetailModal';
