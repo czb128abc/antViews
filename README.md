@@ -1,6 +1,20 @@
-# Ant Design Pro
+# ant views
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+## 安装
+
+ant-views 是一个多包的项目，组件与方法分离，依赖于 react 环境与 umi antd 组件库
+
+安装包
+
+````sh
+npm i ant-views --save
+
+
+## Change Log
+
+### 2020-04-17
+init
+
 
 ## Environment Prepare
 
@@ -8,7 +22,7 @@ Install `node_modules`:
 
 ```bash
 npm install
-```
+````
 
 or
 

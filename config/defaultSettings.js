@@ -9,9 +9,13 @@ export default {
   fixSiderbar: false,
   colorWeak: false,
   menu: {
-    locale: true,
+    locale: false,
   },
-  title: 'Ant Design Pro',
+  title: '陆鱿',
   pwa: false,
-  iconfontUrl: '',
+  iconfontUrl: '/static/logo.svg',
+  footer: {
+    copyright: '5945 研发中心',
+    links: [],
+  },
 };

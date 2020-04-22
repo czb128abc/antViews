@@ -5,4 +5,8 @@ module.exports = {
     page: true,
     REACT_APP_ENV: true,
   },
+  rules: {
+    'import/no-extraneous-dependencies': 0,
+    'class-methods-use-this': 1,
+  },
 };
