@@ -19,21 +19,21 @@ export default class OrgTreeSelect extends Component {
     return getValueFromPopsBefore(value);
   }
 
-  handleChange = value => {
+  handleChange = (value) => {
     const { onChangeBefore, onChange } = this.props;
     onChange(onChangeBefore(value));
   };
 
   async loadDataSource() {
     const result = await dvaUtils.getDispatch()({
-      type: 'backstageMgtOrganization/lazyLoadTreeList',
+      type: 'common/queryOrgTreeData',
     });
-    const dataSource = result.treeList;
+    const dataSource = result.commonOrgTreeList;
     this.setState({ dataSource });
   }
 
-  renderTreeNodes = data =>
-    data.map(item => {
+  renderTreeNodes = (data) =>
+    data.map((item) => {
       const commonProps = {
         key: item.key,
         title: item.title,

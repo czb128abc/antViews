@@ -5,11 +5,35 @@ import { Input, Icon, Button } from 'antd';
 import { notEmptyArray } from '@/utils/processData';
 // import debounce from 'lodash/throttle';
 
-class InputList extends React.PureComponent {
-  // constructor(props) {
-  //   super(props);
-  //   this.handleChange = debounce(this.handleChange, 5000);
-  // }
+const defaultConfig = {
+  getValueFromPropsBefore(value) {
+    const defaultList = [];
+    if (notEmptyArray(value)) {
+      return value;
+    }
+    return defaultList;
+  },
+  onChangeBefore(value) {
+    const defaultList = [];
+    if (notEmptyArray(value)) {
+      return value;
+    }
+    return defaultList;
+  },
+  fieldKey: 'text',
+  textAddBtn: '添加',
+};
+
+class BaseListFormItem extends React.PureComponent {
+  static propTypes = {
+    getValueFromPropsBefore: PropTypes.func,
+    onChangeBefore: PropTypes.func,
+    fieldKey: PropTypes.string,
+  };
+
+  static defaultProps = {
+    ...defaultConfig,
+  };
 
   getValueFromPops() {
     const { getValueFromPropsBefore, value, fieldKey } = this.props;
@@ -44,7 +68,16 @@ class InputList extends React.PureComponent {
       ...item,
       [`${fieldKey}`]: value,
     };
-    console.log('InputList -> update -> value', value);
+    this.handleChange(rows);
+  };
+
+  updateObject = (index, value = {}) => {
+    const rows = this.getValueFromPops();
+    const item = rows[index];
+    rows[index] = {
+      ...item,
+      ...value,
+    };
     this.handleChange(rows);
   };
 
@@ -93,33 +126,4 @@ class InputList extends React.PureComponent {
   }
 }
 
-const defaultConfig = {
-  getValueFromPropsBefore(value, fieldKey) {
-    const defaultList = [[{ [`${fieldKey}`]: '' }]];
-    if (notEmptyArray(value)) {
-      return value;
-    }
-    return defaultList;
-  },
-  onChangeBefore(value, fieldKey) {
-    const defaultList = [[{ [`${fieldKey}`]: '' }]];
-    if (notEmptyArray(value)) {
-      return value;
-    }
-    return defaultList;
-  },
-  fieldKey: 'text',
-  textAddBtn: '添加',
-};
-
-InputList.propTypes = {
-  getValueFromPropsBefore: PropTypes.func,
-  onChangeBefore: PropTypes.func,
-  fieldKey: PropTypes.string,
-};
-
-InputList.defaultProps = {
-  ...defaultConfig,
-};
-
-export default InputList;
+export default BaseListFormItem;

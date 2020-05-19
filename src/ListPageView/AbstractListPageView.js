@@ -55,10 +55,10 @@ class AbstractListPageView extends Component {
     ];
     const notConfigKeys = [];
     const configKeys = Object.keys(distConfig);
-    configKeys.forEach(key => {
+    configKeys.forEach((key) => {
       this[key] = distConfig[key];
     });
-    expectantConfigKeys.forEach(key => {
+    expectantConfigKeys.forEach((key) => {
       if (!configKeys.includes(key)) {
         notConfigKeys.push(key);
       }
@@ -114,38 +114,42 @@ class AbstractListPageView extends Component {
     const { dispatch } = this.props;
     const isEdit = type === 'edit';
     const { recordPrimaryKey } = this;
-    const params = await this.calcSaveOrUpdateParams(values, {
-      type,
-      record,
-      hide,
-      continueWithSave,
-      resetFields,
-    });
-    let saveOrUpdateType = 'save';
-    if (type === 'edit') {
-      saveOrUpdateType = 'update';
-      params[recordPrimaryKey] = record[recordPrimaryKey];
-    }
-    const result = await dispatch({
-      type: `${this.namespace}/${saveOrUpdateType}`,
-      payload: params,
-    });
-    if (result.success) {
-      const msg = isEdit ? '修改成功' : '新增成功';
-      message.success(msg);
-      // 加入继续保存逻辑
-      if (!isEdit && continueWithSave) {
-        resetFields();
-      } else {
-        hide();
+    try {
+      const params = await this.calcSaveOrUpdateParams(values, {
+        type,
+        record,
+        hide,
+        continueWithSave,
+        resetFields,
+      });
+      let saveOrUpdateType = 'save';
+      if (type === 'edit') {
+        saveOrUpdateType = 'update';
+        params[recordPrimaryKey] = record[recordPrimaryKey];
       }
+      const result = await dispatch({
+        type: `${this.namespace}/${saveOrUpdateType}`,
+        payload: params,
+      });
+      if (result.success) {
+        const msg = isEdit ? '修改成功' : '新增成功';
+        message.success(msg);
+        // 加入继续保存逻辑
+        if (!isEdit && continueWithSave) {
+          resetFields();
+        } else {
+          hide();
+        }
 
-      const condition = isEdit ? {} : { current: 1 };
-      this.search(condition);
+        const condition = isEdit ? {} : { current: 1 };
+        this.search(condition);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  del = async item => {
+  del = async (item) => {
     const { dispatch } = this.props;
     const result = await dispatch({
       type: `${this.namespace}/del`,

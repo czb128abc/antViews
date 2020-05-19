@@ -30,6 +30,7 @@ const lessFileFilter = filter((file) => {
 
 const jsFileFilter = filter((file) => {
   const filterDirs = [
+    'src/dva.js',
     'src/index.js',
     'src/utils',
     'src/components',
@@ -86,7 +87,7 @@ function paserSnippet(pairs) {
         .map((item) => '../')
         .filter((_, index) => index > 0)
         .join('');
-      content = content.replace(`from '@/`, `from '${targeStr}`);
+      content = content.replace(RegExp(`from '@/`, 'g'), `from '${targeStr}`);
       // console.log('paserSnippet -> content', content);
       file.contents = new Buffer(content);
     }

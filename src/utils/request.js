@@ -128,7 +128,7 @@ export default function request(url, option) {
       // DELETE and 204 do not return data by default
       // using .json will report an error.
       if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
+        return response.json();
       }
       return response.json();
     })
@@ -170,7 +170,7 @@ async function baseRequest(url, config, otherConfig = {}) {
   return result;
 }
 
-export function post(url, params = {}, otherConfig = {}) {
+export function post(url, params = {}, otherConfig = {}, method = 'POST') {
   let newParams = params;
   const { isRemoveEmptyFields = false } = otherConfig;
   if (isRemoveEmptyFields) {
@@ -179,7 +179,7 @@ export function post(url, params = {}, otherConfig = {}) {
   return baseRequest(
     url,
     {
-      method: 'POST',
+      method,
       body: newParams,
     },
     otherConfig,

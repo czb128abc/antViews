@@ -1,5 +1,5 @@
 export function calcPageInfo(result = {}) {
-  const { pageSize = 10, current = 1, total = 0, totalPageSize = 0 } = result;
+  const { pageSize = 50, current = 1, total = 0, totalPageSize = 0 } = result;
   return {
     pageSize,
     current,
@@ -22,8 +22,8 @@ export default function createCrudModel(config = {}, services) {
       *queryListPage({ payload }, { call, put }) {
         const result = yield call(services.queryListPage, payload);
         if (result.success) {
-          const pageInfo = calcPageInfo(result.pageInfo);
-          const list = result.data;
+          const pageInfo = calcPageInfo(result.data);
+          const list = result.data.data;
           yield put({
             type: 'saveReducer',
             payload: {

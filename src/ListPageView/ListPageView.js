@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, Switch, history } from 'umi';
 // import { history } from 'umi';
 import { Card, Button, Popconfirm } from 'antd';
@@ -81,18 +81,17 @@ export default class ListPageView extends AbstractListPageView {
           wrappedComponentRef={this.refPopupAddPage}
           record={selectRecord}
           type="add"
-          {...this.getDetailCommonProps()}
           onSubmit={this.saveOrUpdate}
+          {...this.getDetailCommonProps()}
         />
         <span>
           <PopupDetail
             wrappedComponentRef={this.refPopupEditPage}
             record={selectRecord}
             type="edit"
-            {...this.getDetailCommonProps()}
-            isLoadDetail
             onLoadDetail={this.queryDetail}
             onSubmit={this.saveOrUpdate}
+            {...this.getDetailCommonProps()}
           />
         </span>
       </div>
@@ -253,22 +252,22 @@ export default class ListPageView extends AbstractListPageView {
     );
   }
 
-  render() {
-    const { PageHeaderWrapper, functionName, RouteDetail, listPageTitle = '' } = this;
+  rendMain() {
+    const { functionName, RouteDetail, listPageTitle = '' } = this;
     const { selectRecord } = this.state;
     const { match } = this.props;
     return (
-      <PageHeaderWrapper title={false}>
+      <Fragment>
         <Switch>
           <Route
             path={`${match.path.replace('/:listPage', '')}/add`}
             render={(routeProps) => (
               <RouteDetail
                 {...routeProps}
-                {...this.getDetailCommonProps()}
                 record={{}}
                 type="add"
                 onSubmit={this.saveOrUpdate}
+                {...this.getDetailCommonProps()}
               />
             )}
           />
@@ -277,11 +276,11 @@ export default class ListPageView extends AbstractListPageView {
             render={(routeProps) => (
               <RouteDetail
                 {...routeProps}
-                {...this.getDetailCommonProps()}
                 record={selectRecord}
                 type="edit"
                 onLoadDetail={this.queryDetail}
                 onSubmit={this.saveOrUpdate}
+                {...this.getDetailCommonProps()}
               />
             )}
           />
@@ -303,7 +302,12 @@ export default class ListPageView extends AbstractListPageView {
             )}
           />
         </Switch>
-      </PageHeaderWrapper>
+      </Fragment>
     );
+  }
+
+  render() {
+    const { PageHeaderWrapper } = this;
+    return <PageHeaderWrapper>{this.rendMain()}</PageHeaderWrapper>;
   }
 }

@@ -6,14 +6,6 @@ import FormItemDateRangePicker from '@/components/base/FormItem/FormItemDateRang
 import FormItemTextArea from '@/components/base/FormItem/FormItemTextArea';
 import FormItemTextSelect from '@/components/base/FormItem/FormItemTextSelect';
 import FormItemSwitch from '@/components/base/FormItem/FormItemSwitch';
-import MonitorItemInWarnRules from '@/components/baseFunctional/FormItem/MonitorItemInWarnRules';
-import MonitorInStationPosition from '@/components/baseFunctional/FormItem/MonitorInStationPosition';
-import WarnRulesTransferInStationPosition from '@/components/baseFunctional/FormItem/WarnRulesTransferInStationPosition';
-import StationPositionTreeSelect from '@/components/baseFunctional/FormItem/StationPositionTreeSelect';
-import OrgTreeSelect from '@/components/baseFunctional/FormItem/OrgTreeSelect';
-import SystemUserSelect from '@/components/baseFunctional/FormItem/SystemUserSelect';
-import InputList from '@/components/baseFunctional/FormItem/InputList';
-import BatchEquipmentEntryList from '@/components/baseFunctional/FormItem/BatchEquipmentEntryList';
 // 映射
 const fieldTypeMapping = {
   text: Input,
@@ -24,14 +16,6 @@ const fieldTypeMapping = {
   textArea: FormItemTextArea,
   select: FormItemTextSelect,
   switch: FormItemSwitch,
-  MonitorItemInWarnRules,
-  MonitorInStationPosition,
-  WarnRulesTransferInStationPosition,
-  StationPositionTreeSelect,
-  OrgTreeSelect,
-  SystemUserSelect,
-  InputList,
-  BatchEquipmentEntryList,
 };
 
 const formItemLayout = {
@@ -106,9 +90,10 @@ export const EditFormItem = ({
     return (
       <div style={{ display: 'none' }}>
         <Form.Item label={item.label}>
-          {getFieldDecorator(item.fieldKey, finalDecoratorConfig)(
-            <FormItemComponent {...formItemComponentProps} {...commonProps} />,
-          )}
+          {getFieldDecorator(
+            item.fieldKey,
+            finalDecoratorConfig,
+          )(<FormItemComponent {...formItemComponentProps} {...commonProps} />)}
         </Form.Item>
       </div>
     );
@@ -117,9 +102,10 @@ export const EditFormItem = ({
   if (formLayoutInline) {
     return (
       <Form.Item label={item.label}>
-        {getFieldDecorator(item.fieldKey, finalDecoratorConfig)(
-          <FormItemComponent {...formItemComponentProps} {...commonProps} />,
-        )}
+        {getFieldDecorator(
+          item.fieldKey,
+          finalDecoratorConfig,
+        )(<FormItemComponent {...formItemComponentProps} {...commonProps} />)}
       </Form.Item>
     );
   }
@@ -127,9 +113,10 @@ export const EditFormItem = ({
   return (
     <Col {...wrapperCol}>
       <Form.Item labelCol={itemLabelCol} wrapperCol={itemWrapperCol} label={item.label}>
-        {getFieldDecorator(item.fieldKey, finalDecoratorConfig)(
-          <FormItemComponent {...formItemComponentProps} {...commonProps} />,
-        )}
+        {getFieldDecorator(
+          item.fieldKey,
+          finalDecoratorConfig,
+        )(<FormItemComponent {...formItemComponentProps} {...commonProps} />)}
       </Form.Item>
     </Col>
   );
@@ -161,8 +148,8 @@ export default class EditForm extends React.PureComponent {
   rendFormItems() {
     const { formFieldsMap } = this.props;
     return Object.values(formFieldsMap)
-      .filter(item => !!item)
-      .map(item => this.rendFormItem(item));
+      .filter((item) => !!item)
+      .map((item) => this.rendFormItem(item));
   }
 
   render() {

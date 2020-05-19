@@ -342,6 +342,140 @@ export function calcOrgAndStationPositionTreeList(data, orgId) {
   return treeList;
 }
 
+export const TREE_ROOT_PARENT_ID = '-1';
+export const TREE_ROOT_ID = '0';
+
+const iconObj = {
+  village: 'gold',
+  org: 'team',
+  building: 'build',
+  prpOrg: 'solution',
+};
+
+export function calcOrgTreeData({ org = [], village = [] }, rootOrgId) {
+  const treeSources = [];
+  const treeListMap = {};
+
+  org.forEach((item) => {
+    const type = 'org';
+    const node = {
+      data: item,
+      id: `${type}_${item.id}`,
+      key: `${type}_${item.id}`,
+      value: `${type}_${item.id}`,
+      icon: iconObj[type],
+      isLeaf: false,
+      type,
+      title: item.name,
+      parentId: `org_${item.fkParentId}`,
+    };
+    treeSources.push(node);
+    treeListMap[node.key] = node;
+  });
+  village.forEach((item) => {
+    const type = 'village';
+    const node = {
+      data: item,
+      id: `${type}_${item.id}`,
+      key: `${type}_${item.id}`,
+      value: `${type}_${item.id}`,
+      icon: iconObj[type],
+      // isLeaf: true,
+      type,
+      title: item.name,
+      parentId: `org_${item.fkcmmAreaId}`,
+    };
+    treeSources.push(node);
+    treeListMap[node.key] = node;
+  });
+  const treeList = arrayToTreeIncludeSelf(
+    treeSources,
+    { id: `org_${rootOrgId}` },
+    'id',
+    'parentId',
+  );
+  console.log('calcOrgTreeData -> treeList', treeList, treeSources);
+  return {
+    treeList,
+    treeListMap,
+  };
+}
+
+export function calcVillageBuildingTreeData(buildings = [], rootVillageNode) {
+  const treeSources = [rootVillageNode];
+  const treeListMap = { [rootVillageNode.id]: rootVillageNode };
+
+  buildings.forEach((item) => {
+    const type = 'building';
+    const node = {
+      data: item,
+      id: `${type}_${item.id}`,
+      key: `${type}_${item.id}`,
+      value: `${type}_${item.id}`,
+      icon: iconObj[type],
+      // isLeaf: false,
+      type,
+      title: item.name,
+      parentId: `village_${item.fkCmmVillageId}`,
+    };
+    const { isCommon = false } = item;
+    if (isCommon) {
+      // node.disabled = true;
+      // node.checkable = true;
+    }
+
+    treeSources.push(node);
+    treeListMap[node.key] = node;
+  });
+  const treeList = arrayToTreeIncludeSelf(
+    treeSources,
+    { id: rootVillageNode.key },
+    'id',
+    'parentId',
+  );
+  console.log('calcVillageBuildingTreeData -> treeList', treeList);
+  return {
+    treeList,
+    treeListMap,
+  };
+}
+
+/**
+ * 构建 小区_部门tree
+ */
+export function calcVillagePrpOrgTreeData(prpOrgs = [], rootVillageNode) {
+  const treeSources = [rootVillageNode];
+  const treeListMap = { [rootVillageNode.id]: rootVillageNode };
+
+  prpOrgs.forEach((item) => {
+    const type = 'prpOrg';
+    const node = {
+      data: item,
+      id: `${type}_${item.id}`,
+      key: `${type}_${item.id}`,
+      value: `${type}_${item.id}`,
+      icon: iconObj[type],
+      // isLeaf: false,
+      type,
+      title: item.name,
+      parentId: item.fkParentId ? `${type}_${item.fkParentId}` : rootVillageNode.id,
+    };
+    treeSources.push(node);
+    treeListMap[node.key] = node;
+  });
+  const treeList = arrayToTreeIncludeSelf(
+    treeSources,
+    { id: rootVillageNode.key },
+    'id',
+    'parentId',
+  );
+  console.log('calcVillagePrpOrgTreeData -> treeList', treeList);
+  return {
+    treeList,
+    treeListMap,
+  };
+}
+
 export function strFormat(str = '', partitionLength = 4, partitionStr = ',') {
   const ruleObj = {
     3: /\B(?=(\d{3})+(?!\d))/g,
@@ -350,3 +484,23 @@ export function strFormat(str = '', partitionLength = 4, partitionStr = ',') {
   };
   return `${str}`.replace(ruleObj[partitionLength], partitionStr);
 }
+
+export function getDefaultFormItemLayout() {
+  const formItemLayout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 20,
+    },
+  };
+  return formItemLayout;
+}
+
+export const delayTimeOperate = (timer) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, timer);
+  });
+};

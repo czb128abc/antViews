@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, Menu } from 'antd';
 import { notEmptyArray } from '../processData';
 
-const ListItemActions = (list = [], showNum = 2) => {
+const ListItemActions = (list = [], showNum = 3) => {
   if (!notEmptyArray(list)) {
     return [];
   }
@@ -31,7 +31,7 @@ const ListItemActions = (list = [], showNum = 2) => {
       <Dropdown overlay={menu} trigger={['click']}>
         <span>更多</span>
       </Dropdown>
-    </span>
+    </span>,
   );
   return nodes;
 };
