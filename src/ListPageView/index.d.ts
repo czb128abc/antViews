@@ -7,35 +7,35 @@ declare class AbstractListPageView extends React.Component {
 
   getDetailCommonProps(): object;
 
-  saveOrUpdate(): void;
+  saveOrUpdate(): Promise<void>;
 
   /**
    *
    * @param item
    */
-  del(item: any): void;
+  del(item: any): Promise<void>;
 
   /**
    *
    * @param condition
    * @param dispatchType
    */
-  baseSearch(condition: any, dispatchType: any): void;
+  baseSearch(condition: any, dispatchType: any): Promise<object>;
 
   /**
    *
    * @param condition
    */
-  search(condition: any): void;
+  search(condition: any): Promise<object>;
 
   /**
    *
    * @param record
    * @param callback
    */
-  queryDetail(record: any, callback: any): void;
+  queryDetail(record: any, callback: any): Promise<void>;
 
-  calcSaveOrUpdateParams(values): object;
+  calcSaveOrUpdateParams(values): Promise<object>;
 
   calcSearchParams(values): object;
 
