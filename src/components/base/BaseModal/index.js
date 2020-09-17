@@ -76,7 +76,7 @@ export default class BaseModal extends PureComponent {
     const { children, content, ...otherProps } = this.props;
     return (
       <span
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
         }}
       >

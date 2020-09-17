@@ -2,13 +2,13 @@
 /* eslint-disable react/sort-comp */
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Spin, Button } from 'antd';
+import { Form, Spin } from 'antd';
 import { getModalFormTypeTitle, getDrawerConfig, getModalConfig } from '@/utils/processData';
 import BaseDrawer from '@/components/base/BaseDrawer';
 import BaseModal from '@/components/base/BaseModal';
-import EditForm from '@/components/base/BaseEditForm/EditForm';
+import EditForm from '@/components/base/BaseEditForm/EditFormily';
 
-export class BasePopupDetail extends PureComponent {
+export class PopupDetailWithFormily extends PureComponent {
   // static displayName = 'BasePopupDetail';
 
   constructor(props) {
@@ -16,6 +16,7 @@ export class BasePopupDetail extends PureComponent {
     this.state = {
       visible: false,
     };
+    this.refFormily = React.createRef();
   }
 
   getDefaultConfig(option = {}) {
@@ -26,6 +27,7 @@ export class BasePopupDetail extends PureComponent {
         visible,
         onOk: () => this.handleOk(),
         onCancel: () => this.hide(),
+        footer: null,
         ...option,
       };
       return getModalConfig(modalConfig);
@@ -45,8 +47,10 @@ export class BasePopupDetail extends PureComponent {
   beforeShow() {}
 
   afterHide() {
-    const { form } = this.props;
-    form.resetFields();
+    const formily = this.refFormily.current;
+    formily.getAction().reset();
+    formily.getAction().clearErrors();
+    console.log('afterShow -> formily', formily);
   }
 
   show(callback) {
@@ -89,18 +93,37 @@ export class BasePopupDetail extends PureComponent {
   }
 
   afterShow(props = this.props) {
-    const { onLoadDetail, record, isLoadDetail, form, type } = props;
-    const callback = data => {
-      const values = form.getFieldsValue();
-      Object.keys(values).forEach(key => {
+    const { onLoadDetail, record, isLoadDetail, type } = props;
+
+    const callback = (data) => {
+      const formily = this.refFormily.current;
+      console.log('afterShow -> formily', formily);
+      if (!formily) {
+        return;
+      }
+      const values = formily.getInitialValues();
+      const newObj = {};
+      Object.keys(values).forEach((key) => {
         // eslint-disable-next-line no-prototype-builtins
         if (data.hasOwnProperty(key)) {
-          values[key] = data[key];
+          newObj[key] = data[key];
         }
       });
-      console.log('afterShow callback', values, data);
-      form.resetFields();
-      form.setFieldsValue(values);
+      console.log('afterShow callback', newObj, data);
+
+      formily.getAction().setFormState((state) => {
+        // eslint-disable-next-line no-param-reassign
+        state.values = newObj;
+        // eslint-disable-next-line no-param-reassign
+        state.initialValues = values;
+        // eslint-disable-next-line no-param-reassign
+        state.errors = [];
+        // eslint-disable-next-line no-param-reassign
+        state.valid = true;
+      });
+      setTimeout(() => {
+        formily.getAction().clearErrors();
+      }, 100);
     };
     if (type === 'edit' && isLoadDetail && typeof onLoadDetail === 'function') {
       onLoadDetail(record, callback);
@@ -130,27 +153,23 @@ export class BasePopupDetail extends PureComponent {
     return this.formFieldsMap || formFieldsMap;
   }
 
-  handleOk = continueWithSave => {
-    const { onSubmit, record, type, form } = this.props;
-    this.getFormValue()
-      .then(values => {
-        const otherProps = {
-          record,
-          type,
-          hide: () => {
-            this.hide();
-          },
-          continueWithSave,
-          resetFields: form.resetFields,
-        };
-        onSubmit(values, otherProps);
-      })
-      .catch(err => console.error('rejected', err));
+  handleOk = (values, resetFields) => {
+    const { onSubmit, record, type, continueWithSave } = this.props;
+    const otherProps = {
+      record,
+      type,
+      hide: () => {
+        this.hide();
+      },
+      continueWithSave,
+      resetFields,
+    };
+    onSubmit(values, otherProps);
   };
 
   rendContent() {
     const { visible } = this.state;
-    const { loading, form, type } = this.props;
+    const { loading, form, type, formilyEffects } = this.props;
     const {
       record,
       continueWithSave,
@@ -161,44 +180,21 @@ export class BasePopupDetail extends PureComponent {
     return (
       <Fragment>
         <Spin spinning={loading || !visible}>
-          <Form>
-            <DefaultEditForm
-              formFieldsMap={formFieldsMap}
-              form={form}
-              type={type}
-              specificFieldTypeMapping={specificFieldTypeMapping}
-              record={record}
-            />
-          </Form>
+          <Form />
+          <DefaultEditForm
+            formFieldsMap={formFieldsMap}
+            form={form}
+            type={type}
+            onSubmit={this.handleOk}
+            onCancle={() => this.hide()}
+            specificFieldTypeMapping={specificFieldTypeMapping}
+            record={record}
+            continueWithSave={continueWithSave}
+            loading={loading}
+            ref={this.refFormily}
+            formilyEffects={formilyEffects}
+          />
         </Spin>
-        <div
-          className="btn-group"
-          style={{
-            position: 'absolute',
-            left: 0,
-            bottom: 0,
-            width: '100%',
-            borderTop: '1px solid #e9e9e9',
-            padding: '10px 16px',
-            background: '#fff',
-            textAlign: 'right',
-            zIndex: 10,
-          }}
-        >
-          <Button onClick={() => this.hide()}>取消</Button>
-          {type === 'add' && continueWithSave && (
-            <Button
-              loading={loading}
-              onClick={() => this.handleOk(continueWithSave)}
-              type="primary"
-            >
-              保存并继续添加
-            </Button>
-          )}
-          <Button loading={loading} onClick={() => this.handleOk()} type="primary">
-            确定
-          </Button>
-        </div>
       </Fragment>
     );
   }
@@ -214,7 +210,7 @@ export class BasePopupDetail extends PureComponent {
     return (
       <span
         style={wrapperChildrenStyle}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
         }}
       >
@@ -225,7 +221,7 @@ export class BasePopupDetail extends PureComponent {
   }
 }
 
-BasePopupDetail.propTypes = {
+PopupDetailWithFormily.propTypes = {
   type: PropTypes.oneOf(['add', 'edit', 'detail']).isRequired,
   wrapperChildrenStyle: PropTypes.object,
   onSubmit: PropTypes.func,
@@ -242,7 +238,7 @@ BasePopupDetail.propTypes = {
   EditForm: PropTypes.func,
 };
 
-BasePopupDetail.defaultProps = {
+PopupDetailWithFormily.defaultProps = {
   wrapperChildrenStyle: {},
   onSubmit: () => {},
   onLoadDetail: () => {},
@@ -261,4 +257,4 @@ export function formCreate(config = {}) {
   return Form.create(config);
 }
 
-export default Form.create()(BasePopupDetail);
+export default Form.create()(PopupDetailWithFormily);
