@@ -7,6 +7,7 @@ import { getModalFormTypeTitle, getDrawerConfig, getModalConfig } from '@/utils/
 import BaseDrawer from '@/components/base/BaseDrawer';
 import BaseModal from '@/components/base/BaseModal';
 import EditForm from '@/components/base/BaseEditForm/EditForm';
+import Permission from './Permission';
 
 export class BasePopupDetail extends PureComponent {
   // static displayName = 'BasePopupDetail';
@@ -187,17 +188,21 @@ export class BasePopupDetail extends PureComponent {
         >
           <Button onClick={() => this.hide()}>取消</Button>
           {type === 'add' && continueWithSave && (
-            <Button
-              loading={loading}
-              onClick={() => this.handleOk(continueWithSave)}
-              type="primary"
-            >
-              保存并继续添加
-            </Button>
+            <Permission permissionKey="btn_save">
+              <Button
+                loading={loading}
+                onClick={() => this.handleOk(continueWithSave)}
+                type="primary"
+              >
+                保存并继续添加
+              </Button>
+            </Permission>
           )}
-          <Button loading={loading} onClick={() => this.handleOk()} type="primary">
-            确定
-          </Button>
+          <Permission permissionKey={type === 'add' ? 'btn_save' : 'btn_edit'}>
+            <Button loading={loading} onClick={() => this.handleOk()} type="primary">
+              确定
+            </Button>
+          </Permission>
         </div>
       </Fragment>
     );

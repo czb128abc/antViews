@@ -94,12 +94,21 @@ class AbstractListPageView extends Component {
   }
 
   getDetailDefaultProps() {
-    const { functionName, formFieldsMap, specificFieldTypeMapping = {}, EditForm } = this;
+    const {
+      functionName,
+      formFieldsMap,
+      specificFieldTypeMapping = {},
+      EditForm,
+      globalFieldTypeMapping = {},
+    } = this;
     const { loading } = this.props;
     return {
       title: `${functionName || ''}`.replace('管理', ''),
       formFieldsMap,
-      specificFieldTypeMapping,
+      specificFieldTypeMapping: {
+        ...globalFieldTypeMapping,
+        ...specificFieldTypeMapping,
+      },
       loading,
       EditForm,
       isLoadDetail: true,

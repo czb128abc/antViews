@@ -3,6 +3,7 @@ import { Route, Switch, history } from 'umi';
 // import { history } from 'umi';
 import { Card, Button, Popconfirm } from 'antd';
 import { ListItemActions } from '@/utils/processRenderData';
+import Permission from '@/ListPageView/components/Permission';
 import AbstractListPageView from './AbstractListPageView';
 
 export default class ListPageView extends AbstractListPageView {
@@ -67,16 +68,18 @@ export default class ListPageView extends AbstractListPageView {
     const toAddIsAlignWithTitle = this.toAddIsAlignWithTitle();
     return (
       <div style={{ display: toAddIsAlignWithTitle ? 'none' : 'block', marginBottom: 8 }}>
-        <Button
-          type="dashed"
-          icon="plus"
-          block
-          onClick={() => {
-            this.showAddView();
-          }}
-        >
-          添加{functionName}
-        </Button>
+        <Permission permissionKey="btn_to_add">
+          <Button
+            type="dashed"
+            icon="plus"
+            block
+            onClick={() => {
+              this.showAddView();
+            }}
+          >
+            添加{functionName}
+          </Button>
+        </Permission>
         <PopupDetail
           wrappedComponentRef={this.refPopupAddPage}
           record={selectRecord}
@@ -101,22 +104,34 @@ export default class ListPageView extends AbstractListPageView {
   getListItemActionList(item) {
     const { getListItemExtraActionList } = this;
     const actionList = [
-      <Popconfirm
-        title="确认删除?"
-        onConfirm={() => this.del(item)}
-        okText="删除"
-        cancelText="取消"
+      <Permission
+        permissionKey="btn_remove"
+        noPermissionType="tooltip"
+        noPermissionText="暂无删除权限"
       >
-        <span className="mock-link">删除</span>
-      </Popconfirm>,
-      <span
-        className="mock-link"
-        onClick={() => {
-          this.showEditView(item);
-        }}
+        <Popconfirm
+          title="确认删除?"
+          onConfirm={() => this.del(item)}
+          okText="删除"
+          cancelText="取消"
+        >
+          <span className="mock-link">删除</span>
+        </Popconfirm>
+      </Permission>,
+      <Permission
+        permissionKey="btn_to_edit"
+        noPermissionType="tooltip"
+        noPermissionText="暂无编辑权限"
       >
-        编辑
-      </span>,
+        <span
+          className="mock-link"
+          onClick={() => {
+            this.showEditView(item);
+          }}
+        >
+          编辑
+        </span>
+      </Permission>,
     ];
     const extraList =
       typeof getListItemExtraActionList === 'function' ? this.getListItemExtraActionList(item) : [];
@@ -217,9 +232,11 @@ export default class ListPageView extends AbstractListPageView {
     if (this.toAddIsAlignWithTitle()) {
       return (
         <div>
-          <Button onClick={() => this.showAddView()} icon="plus">
-            添加
-          </Button>
+          <Permission permissionKey="btn_to_add">
+            <Button onClick={() => this.showAddView()} icon="plus">
+              添加
+            </Button>
+          </Permission>
         </div>
       );
     }

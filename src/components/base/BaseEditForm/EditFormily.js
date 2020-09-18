@@ -13,8 +13,8 @@ import FormItemDateRangePicker from '@/components/base/FormItem/FormItemDateRang
 import FormItemTextArea from '@/components/base/FormItem/FormItemTextArea';
 import FormItemTextSelect from '@/components/base/FormItem/FormItemTextSelect';
 import FormItemSwitch from '@/components/base/FormItem/FormItemSwitch';
-import InputList from '@/components/baseFunctional/FormItem/InputList';
 import { Button, Input, message } from 'antd';
+import Permission from '@/ListPageView/components/Permission';
 // 映射
 const fieldTypeMapping = {
   text: Input,
@@ -25,7 +25,6 @@ const fieldTypeMapping = {
   textArea: FormItemTextArea,
   select: FormItemTextSelect,
   switch: FormItemSwitch,
-  InputList,
 };
 
 const formItemLayout = {
@@ -200,13 +199,17 @@ export default class EditForm extends React.Component {
         <FormButtonGroup sticky style={{ textAlign: 'right', paddingRight: 16 }}>
           <Button onClick={this.handleCancle}>取消</Button>
           {type === 'add' && continueWithSave && (
-            <Button onClick={() => this.handleOk(continueWithSave)} type="primary">
-              保存并继续添加
-            </Button>
+            <Permission permissionKey="btn_save">
+              <Button onClick={() => this.handleOk(continueWithSave)} type="primary">
+                保存并继续添加
+              </Button>
+            </Permission>
           )}
-          <Button loading={loading} onClick={() => this.handleOk()} type="primary">
-            确定
-          </Button>
+          <Permission permissionKey={type === 'add' ? 'btn_save' : 'btn_edit'}>
+            <Button loading={loading} onClick={() => this.handleOk()} type="primary">
+              确定
+            </Button>
+          </Permission>
         </FormButtonGroup>
       </SchemaForm>
     );
