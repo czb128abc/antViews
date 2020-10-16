@@ -2,8 +2,21 @@ import React, { createContext } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'umi';
 import { Icon, Row, Col, Tooltip } from 'antd';
+import pathToRegexp from 'path-to-regexp';
 
 export const PermissionContext = createContext();
+
+function matchUrlObj(menuMap, pathName) {
+  let matchedUrlObj = null;
+  Object.values(menuMap).forEach((urlObj) => {
+    const re = pathToRegexp(urlObj.url);
+    if (!matchedUrlObj && re.exec(pathName)) {
+      matchedUrlObj = urlObj;
+    }
+  });
+
+  return matchedUrlObj;
+}
 
 export const NoPermissionView = ({ noPermissionType = 'none', noPermissionText = '暂无权限' }) => {
   if (noPermissionType === 'none') {
@@ -51,11 +64,13 @@ class Permission extends React.Component {
 
   checkPermission({ menuMap = {} }) {
     const { match, permissionKey } = this.props;
-    const pageMenu = menuMap[match.url];
-    if (!pageMenu) {
+    const urlObj = matchUrlObj(menuMap, match.url);
+    // 若对应的页面配置为 null, 则无需校验页面
+    if (!urlObj) {
       return true;
     }
-    const { permissionKeys = [] } = pageMenu;
+
+    const { permissionKeys = [] } = urlObj;
     return permissionKeys.includes(permissionKey);
   }
 
