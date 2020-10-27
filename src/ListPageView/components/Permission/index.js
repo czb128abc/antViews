@@ -11,7 +11,11 @@ function matchUrlObj(menuMap, pathName) {
   Object.values(menuMap).forEach((urlObj) => {
     const re = pathToRegexp(urlObj.url);
     if (!matchedUrlObj && re.exec(pathName)) {
-      matchedUrlObj = urlObj;
+      const { isButtonCtl = false } = urlObj;
+      // 页面是否控制按钮
+      if (isButtonCtl) {
+        matchedUrlObj = urlObj;
+      }
     }
   });
 

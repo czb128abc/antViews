@@ -36,8 +36,6 @@ const formItemLayout = {
   },
 };
 
-const actions = createFormActions();
-
 export const EditFormItem = ({
   item,
   formLayoutInline,
@@ -92,6 +90,12 @@ export const EditFormItem = ({
 };
 
 export default class EditForm extends React.Component {
+  constructor(props) {
+    super(props);
+    const actions = createFormActions();
+    this.actions = actions;
+  }
+
   getBaseEditFormItemProps() {
     const { type, specificFieldTypeMapping, needToValidate, formLayoutInline } = this.props;
     const config = {
@@ -108,7 +112,7 @@ export default class EditForm extends React.Component {
   }
 
   getAction() {
-    return actions;
+    return this.actions;
   }
 
   getInitialValues() {

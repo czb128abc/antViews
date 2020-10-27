@@ -100,6 +100,7 @@ class AbstractListPageView extends Component {
       specificFieldTypeMapping = {},
       EditForm,
       globalFieldTypeMapping = {},
+      isLoadDetail = true,
     } = this;
     const { loading } = this.props;
     return {
@@ -111,7 +112,7 @@ class AbstractListPageView extends Component {
       },
       loading,
       EditForm,
-      isLoadDetail: true,
+      isLoadDetail,
     };
   }
 
