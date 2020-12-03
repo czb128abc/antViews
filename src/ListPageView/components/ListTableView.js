@@ -16,6 +16,7 @@ export default class ListTableView extends PureComponent {
       otherTableProps = {},
       displayType = 'table', // list
       otherPaginationProps = {},
+      rowKey,
     } = this.props;
     const paginationProps = {
       showSizeChanger: true,
@@ -26,10 +27,10 @@ export default class ListTableView extends PureComponent {
       current: pageInfo.current,
     };
     if (displayType === 'list') {
-      const listItemRender = item => (
+      const listItemRender = (item) => (
         <div>
           <Descriptions>
-            {columns.map(column => (
+            {columns.map((column) => (
               <Descriptions.Item key={column.dataIndex} label={column.title}>
                 {typeof column.render === 'function'
                   ? column.render(item[column.dataIndex], item)
@@ -52,7 +53,7 @@ export default class ListTableView extends PureComponent {
     return (
       <Fragment>
         <Table
-          rowKey={row => row.id}
+          rowKey={(row) => row[rowKey]}
           loading={loading}
           dataSource={list}
           columns={columns}
@@ -63,7 +64,7 @@ export default class ListTableView extends PureComponent {
           <Pagination
             className="mt_16"
             style={{ textAlign: 'right' }}
-            showTotal={total => `总共 ${total} 条`}
+            showTotal={(total) => `总共 ${total} 条`}
             pageSizeOptions={pageSizeOptions}
             {...paginationProps}
             {...otherPaginationProps}

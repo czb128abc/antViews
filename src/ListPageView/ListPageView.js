@@ -212,6 +212,7 @@ export default class ListPageView extends AbstractListPageView {
       onPageChange: (current, pageSize) => {
         this.search({ current, pageSize });
       },
+      rowKey: this.recordPrimaryKey,
     };
     if (displayListType === 'list') {
       viewProps.listItemRender = this.rendListItemView;

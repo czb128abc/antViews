@@ -119,7 +119,11 @@ export default class EditForm extends React.Component {
     const values = {};
     const { formFieldsMap } = this.props;
     Object.values(formFieldsMap).forEach((item) => {
-      values[item.fieldKey] = item.fieldAttr.fieldDecoratorConfig.initialValue || '';
+      if (typeof item.fieldAttr.fieldDecoratorConfig.initialValue === 'undefined') {
+        values[item.fieldKey] = '';
+      } else {
+        values[item.fieldKey] = item.fieldAttr.fieldDecoratorConfig.initialValue;
+      }
     });
     console.log('EditForm -> getInitialValues -> values', values);
 

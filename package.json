@@ -1,6 +1,6 @@
 {
   "name": "ant-views",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "antd umi 后台项目前端组件封装和方法库",
   "main": "lib/index.js",
   "module": "es/index.js",
