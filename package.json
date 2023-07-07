@@ -125,7 +125,7 @@
     "prettier": "^2.0.1",
     "pro-download": "1.0.1",
     "puppeteer-core": "^2.1.1",
-    "stylelint": "^13.0.0",
+    "stylelint": "^15.10.1",
     "tern": "^0.24.3",
     "through2": "^3.0.1"
   },
